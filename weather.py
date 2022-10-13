@@ -81,10 +81,10 @@ def rand_list(n):
     return lst
 
 
-'''november \
-    = [9, 7, 4, 4, 4, 8, 5, 5, 5, 6, 0, 0, 0, 1, 0, -5, -4, -3, 0, 0, -1, -1, -2, -8, -7, -1, 4, 1, -1, 1, 1]'''
-#november = rand_list(1000000)
-november = [-18, 21, -1, 5, 28, -14, -29, 27, -10, 4, -10, -30, -25, 4, -1, 4, 27, 23, -30, 11, 8, -2, -27, 25, 11, -22, -18, -26, -2, 29]
+#november \
+#    = [9, 7, 4, 4, 4, 8, 5, 5, 5, 6, 0, 0, 0, 1, 0, -5, -4, -3, 0, 0, -1, -1, -2, -8, -7, -1, 4, 1, -1, 1, 1]
+november = rand_list(100)
+#november = [-18, 21, -1, 5, 28, -14, -29, 27, -10, 4, -10, -30, -25, 4, -1, 4, 27, 23, -30, 11, 8, -2, -27, 25, 11, -22, -18, -26, -2, 29]
 print('Начальный список:')
 print(*november, sep=', ')
 output = [None]  # Список, который формируем на выход
@@ -95,13 +95,37 @@ temp_list = []  # Временный список для разбиения от
 for i in range(1, len(november)):  # Проход справа налево с выделением максимумов
     if november[i] >= max_temp:  # Выделяем максимум -> разбиение помещаем в функцию -> очищаем temp_list
         max_temp = november[i]
-        output += sort(temp_list)
-        temp_list.clear()
-        temp_list.append(november[i])
         output.append(None)  # Так как был максимум температуры, фиксируем его как None
     else:
-        temp_list.append(november[i])  # Пополняем временный temp_list (делаем разбиение)
-
+        output.append('-')
 output.reverse()
+november.reverse()
+l = []
+for i in range(len(november) - 1):
+    if output[i] is None:
+        if temp_list:
+            x = temp_list.copy()
+            x.append(november[i])
+            x.reverse()
+            l.append(x)
+        l.append(None)
+        temp_list.clear()
+    elif i == (len(november) - 2) and l == []:
+        x = temp_list.copy()
+        x.append(november[-1])
+        x.reverse()
+        l.append(x)
+    else:
+        temp_list.append(november[i])
+else:
+    l.append(None)
+output.clear()
+for elem in l:
+    if elem is not None:
+        x = sort(elem)
+        x.reverse()
+        output += x
+    else:
+        output.append(None)
 print('Результат:')
 print(*output, sep=', ')
